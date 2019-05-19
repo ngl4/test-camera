@@ -28,13 +28,15 @@ function gotDevices(mediaDevices) {
   });
 }
 
-button.addEventListener('click', event => {
-  console.log(currentStream);
-  if (typeof currentStream !== 'undefined') {
-    stopMediaTracks(currentStream);
-  }
+// button.addEventListener('click', event => {
 
-});
+
+// });
+
+console.log(currentStream);
+if (typeof currentStream !== 'undefined') {
+  stopMediaTracks(currentStream);
+}
 
 const videoConstraints = {};
 const constraints = {
@@ -48,7 +50,7 @@ if (select.value === '') {
   .then(stream => {
     currentStream = stream;
     video.srcObject = stream;
-    // return navigator.mediaDevices.enumerateDevices();
+    return navigator.mediaDevices.enumerateDevices();
   })
   .then(gotDevices)
   .catch(error => {
@@ -61,7 +63,7 @@ if (select.value === '') {
   .then(stream => {
     currentStream = stream;
     video.srcObject = stream;
-    // return navigator.mediaDevices.enumerateDevices();
+    return navigator.mediaDevices.enumerateDevices();
   })
   .then(gotDevices)
   .catch(error => {
