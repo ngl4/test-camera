@@ -2,9 +2,10 @@ document.addEventListener("DOMContentLoaded", function(){
   // Handler when the DOM is fully loaded
 
 const video = document.getElementById('video');
-const button = document.getElementById('button');
+// const button = document.getElementById('button');
 const select = document.getElementById('select');
 let currentStream;
+let mediaDevicesArr = [];
 
 function stopMediaTracks(stream) {
   stream.getTracks().forEach(track => {
@@ -20,6 +21,7 @@ function gotDevices(mediaDevices) {
     if (mediaDevice.kind === 'videoinput') {
       const option = document.createElement('option');
       option.value = mediaDevice.deviceId;
+      mediaDevicesArr.push(mediaDevice.deviceId);
       const label = mediaDevice.label || `Camera ${count++}`;
       const textNode = document.createTextNode(label);
       option.appendChild(textNode);
@@ -28,9 +30,11 @@ function gotDevices(mediaDevices) {
   });
 }
 
+
+
+
 // button.addEventListener('click', event => {
-
-
+  
 // });
 
 console.log(currentStream);
@@ -44,19 +48,23 @@ const constraints = {
   audio: false
 };
 if (select.value === '') {
-  videoConstraints.facingMode = 'environment';
-  navigator.mediaDevices
-  .getUserMedia(constraints)
-  .then(stream => {
-    currentStream = stream;
-    video.srcObject = stream;
-    return navigator.mediaDevices.enumerateDevices();
-  })
-  .then(gotDevices)
-  .catch(error => {
-    console.error(error);
-  });
-} else {
+  console.log("Nothing shows up");
+  // navigator.mediaDevices.enumerateDevices();
+  // videoConstraints.facingMode = 'environment';
+  // navigator.mediaDevices
+  // .getUserMedia(constraints)
+  // .then(stream => {
+  //   currentStream = stream;
+  //   video.srcObject = stream;
+  //   return navigator.mediaDevices.enumerateDevices();
+  // })
+  // .then(gotDevices)
+  // .catch(error => {
+  //   console.error(error);
+  // });
+ 
+}  else {
+  console.log("Something is picked!");
   videoConstraints.deviceId = { exact: select.value };
   navigator.mediaDevices
   .getUserMedia(constraints)
@@ -69,6 +77,32 @@ if (select.value === '') {
   .catch(error => {
     console.error(error);
   });
+}
+
+select.addEventListener('change', changeCamera, false);
+
+function changeCamera() {
+  var component = this;
+  mediaDevicesArr.forEach(function(elem){
+    if (elem === component.value){
+      console.log(elem, component.value);
+
+       videoConstraints.facingMode = 'environment';
+  navigator.mediaDevices
+  .getUserMedia(constraints)
+  .then(stream => {
+    currentStream = stream;
+    video.srcObject = stream;
+    return navigator.mediaDevices.enumerateDevices();
+  })
+  .then(gotDevices)
+  .catch(error => {
+    console.error(error);
+  });
+
+
+    }
+  })
 }
 
 
