@@ -1,11 +1,11 @@
 document.addEventListener("DOMContentLoaded", function(){
   // Handler when the DOM is fully loaded
 
-const video = document.getElementById('video');
-// const button = document.getElementById('button');
+const video = document.getElementById('video'); 
+//1) REMOVE the button 
 const select = document.getElementById('select');
 let currentStream;
-let mediaDevicesArr = [];
+let mediaDevicesArr = [];  // 2) Add mediaDevicesArr 
 
 function stopMediaTracks(stream) {
   stream.getTracks().forEach(track => {
@@ -21,6 +21,7 @@ function gotDevices(mediaDevices) {
     if (mediaDevice.kind === 'videoinput') {
       const option = document.createElement('option');
       option.value = mediaDevice.deviceId;
+      // 3) Add mediaDevicesArr here
       mediaDevicesArr.push(mediaDevice.deviceId);
       const label = mediaDevice.label || `Camera ${count++}`;
       const textNode = document.createTextNode(label);
@@ -30,14 +31,6 @@ function gotDevices(mediaDevices) {
   });
 }
 
-
-
-
-// button.addEventListener('click', event => {
-  
-// });
-
-console.log(currentStream);
 if (typeof currentStream !== 'undefined') {
   stopMediaTracks(currentStream);
 }
@@ -47,46 +40,16 @@ const constraints = {
   video: videoConstraints,
   audio: false
 };
-if (select.value === '') {
-  console.log("Nothing shows up");
-  // navigator.mediaDevices.enumerateDevices();
-  // videoConstraints.facingMode = 'environment';
-  // navigator.mediaDevices
-  // .getUserMedia(constraints)
-  // .then(stream => {
-  //   currentStream = stream;
-  //   video.srcObject = stream;
-  //   return navigator.mediaDevices.enumerateDevices();
-  // })
-  // .then(gotDevices)
-  // .catch(error => {
-  //   console.error(error);
-  // });
- 
-}  else {
-  console.log("Something is picked!");
-  videoConstraints.deviceId = { exact: select.value };
-  navigator.mediaDevices
-  .getUserMedia(constraints)
-  .then(stream => {
-    currentStream = stream;
-    video.srcObject = stream;
-    return navigator.mediaDevices.enumerateDevices();
-  })
-  .then(gotDevices)
-  .catch(error => {
-    console.error(error);
-  });
-}
 
+//4) Add an event listener to change different camera -- inspired from http://jsfiddle.net/davidThomas/rCsDB/ 
 select.addEventListener('change', changeCamera, false);
 
 function changeCamera() {
-  var component = this;
+  var component = this; 
   mediaDevicesArr.forEach(function(elem){
     if (elem === component.value){
-      console.log(elem, component.value);
-
+      //console.log(elem, component.value);
+      //5) These are the portion of the boilerplate code to find specific devices
       videoConstraints.deviceId = { exact: select.value };
       navigator.mediaDevices
       .getUserMedia(constraints)
@@ -99,14 +62,42 @@ function changeCamera() {
       .catch(error => {
         console.error(error);
       });
-
-
     }
   })
 }
 
-
-
+//6) the below is also part of the boilerplate code 
 navigator.mediaDevices.enumerateDevices().then(gotDevices);
+
+
+//7) COMMENT OUT ALL THESE CODES FROM THE BOILERPLATE
+// if (select.value === '') {
+  // videoConstraints.facingMode = 'environment';
+  // navigator.mediaDevices
+  // .getUserMedia(constraints)
+  // .then(stream => {
+  //   currentStream = stream;
+  //   video.srcObject = stream;
+  //   return navigator.mediaDevices.enumerateDevices();
+  // })
+  // .then(gotDevices)
+  // .catch(error => {
+  //   console.error(error);
+  // });
+// }  else {
+//   videoConstraints.deviceId = { exact: select.value };
+//   navigator.mediaDevices
+//   .getUserMedia(constraints)
+//   .then(stream => {
+//     currentStream = stream;
+//     video.srcObject = stream;
+//     return navigator.mediaDevices.enumerateDevices();
+//   })
+//   .then(gotDevices)
+//   .catch(error => {
+//     console.error(error);
+//   });
+// }
+
 
 });

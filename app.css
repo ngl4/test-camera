@@ -19,6 +19,7 @@ header {
   background: #f0293e;
   color: #fff;
   text-align: center;
+  padding-top: 40px;
 }
 main {
   background: #ffffff;
@@ -42,6 +43,7 @@ footer {
   background: #333e5a;
   color: #fff;
   text-align: center;
+  height: 40px;
 }
 
 footer a {
