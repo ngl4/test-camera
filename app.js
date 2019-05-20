@@ -87,18 +87,18 @@ function changeCamera() {
     if (elem === component.value){
       console.log(elem, component.value);
 
-       videoConstraints.facingMode = 'environment';
-  navigator.mediaDevices
-  .getUserMedia(constraints)
-  .then(stream => {
-    currentStream = stream;
-    video.srcObject = stream;
-    return navigator.mediaDevices.enumerateDevices();
-  })
-  .then(gotDevices)
-  .catch(error => {
-    console.error(error);
-  });
+      videoConstraints.deviceId = { exact: select.value };
+      navigator.mediaDevices
+      .getUserMedia(constraints)
+      .then(stream => {
+        currentStream = stream;
+        video.srcObject = stream;
+        return navigator.mediaDevices.enumerateDevices();
+      })
+      .then(gotDevices)
+      .catch(error => {
+        console.error(error);
+      });
 
 
     }
