@@ -46,9 +46,9 @@ select.addEventListener('change', changeCamera, false);
 
 function changeCamera() {
   var component = this; 
-  mediaDevicesArr.forEach(function(elem){
-    if (elem === component.value){
-      //console.log(elem, component.value);
+  mediaDevicesArr.forEach(function(mediaDevice){
+    if (mediaDevice === component.value){
+      //console.log(mediaDevice, component.value);
       //5) These are the portion of the boilerplate code to find specific devices
       videoConstraints.deviceId = { exact: select.value };
       navigator.mediaDevices
